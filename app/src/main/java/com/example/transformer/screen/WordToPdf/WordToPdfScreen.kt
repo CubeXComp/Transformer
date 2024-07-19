@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
+
 import com.example.transformer.LayoutAndComposable.UploadContainerItem
 import com.example.transformer.screen.ContainerItem
 import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeableTheme
@@ -64,7 +65,7 @@ fun CollapsibleHeaderScreen() {
                     "Choose Word File",
                     "Upload",
                     {
-                        //  Image Picker
+                        // Image
                     },
                 )
             }
