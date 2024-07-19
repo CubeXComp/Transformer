@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Transformer</string>
+    <string name="title_activity_word_to_pdf_screen">WordToPdfScreen</string>
 </resources>

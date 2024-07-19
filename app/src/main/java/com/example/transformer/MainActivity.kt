@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import com.example.transformer.ui.theme.TransformerTheme
+import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeableTheme
 
 
 
@@ -15,7 +15,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            TransformerTheme {
+            MotionLayoutWithNestedScrollAndSwipeableTheme {
 
                 MainScreen()
             }

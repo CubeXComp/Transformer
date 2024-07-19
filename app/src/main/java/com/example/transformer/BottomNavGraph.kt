@@ -19,7 +19,7 @@ fun BottomNavGraph(
     ) {
 
         composable(route = BottomBarScreen.Home.tittle) {
-            HomeScreen()
+            HomeScreen(navController)
         }
         composable(route = BottomBarScreen.Scan.tittle) {
             ScanPage()

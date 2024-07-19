@@ -21,7 +21,7 @@ fun ScanPage() {
             text = "Scan Screen",
             fontSize = MaterialTheme.typography.headlineMedium.fontSize,
             fontWeight = FontWeight.Bold,
-            color = Color.White
+            color = Color.Blue
         )
     }
 }
