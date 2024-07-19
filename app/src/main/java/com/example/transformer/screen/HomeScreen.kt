@@ -1,11 +1,12 @@
 package com.example.transformer.screen
 
+import android.content.Context
+import android.content.Intent
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -17,10 +18,14 @@ import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.Article
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat.startActivity
+import androidx.navigation.NavHostController
+import com.example.transformer.screen.WordToPdf.WordToPdfScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HomeScreen() {
+fun HomeScreen(navController: NavHostController) {
     Scaffold(
         topBar = {
             LargeTopAppBar(
@@ -32,25 +37,31 @@ fun HomeScreen() {
             )
         }
     ) { innerPadding ->
-        LazyColumn(
-            contentPadding = innerPadding,
-            modifier = Modifier.fillMaxSize()
-        ) {
-            items(containerItems) { item ->
-                ContainerItem(item)
+        LazyColumn(contentPadding = innerPadding, modifier = Modifier.fillMaxSize()) {
+                items(containerItems) { item ->
+                ContainerItem(item,navController)
+
             }
         }
     }
 }
 
 @Composable
-fun ContainerItem(item: ContainerItemData) {
-    Card(
-        modifier = Modifier
+fun ContainerItem(item: ContainerItemData, navController: NavHostController) {
+    val context = LocalContext.current
+
+    Card(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable { /* Handle click */ },
-        colors = CardDefaults.cardColors(
+            .clickable {
+
+                if(item.heading=="Word to Pdf"){
+                    val navigate = Intent(context, WordToPdfScreen::class.java)
+                    context.startActivity(navigate)
+                }
+
+            },
+            colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant
         )
     ) {
@@ -93,21 +104,9 @@ data class ContainerItemData(
 
 
 val containerItems = listOf(
-    ContainerItemData(
-        Icons.Default.PhotoSizeSelectLarge,
-        "Image Resize",
-        "Adjust the dimensions of your images"
-    ),
+    ContainerItemData(Icons.Default.PhotoSizeSelectLarge, "Image Resize", "Adjust the dimensions of your images"),
     ContainerItemData(Icons.Default.PictureAsPdf, "Image To Pdf", "Convert images into PDF format"),
     ContainerItemData(Icons.Default.Image, "PDF to Image", "Extract images from PDF files"),
-    ContainerItemData(
-        Icons.Default.Description,
-        "Word to Pdf",
-        "Convert Word documents to PDF format"
-    ),
-    ContainerItemData(
-        Icons.Default.Article,
-        "Pdf to Word",
-        "Convert PDF files to editable Word documents"
-    )
+    ContainerItemData(Icons.Default.Description, "Word to Pdf", "Convert Word documents to PDF format"),
+    ContainerItemData(Icons.Default.Article, "Pdf to Word", "Convert PDF files to editable Word documents")
 )

@@ -27,12 +27,9 @@ fun MainScreen() {
         BottomNavGraph(navController = navController)
     }
 }
-
 @Composable
 fun BottomBar(navController: NavHostController) {
-    val screens = listOf(
-        BottomBarScreen.Home, BottomBarScreen.Scan, BottomBarScreen.Tools
-    )
+    val screens = listOf(BottomBarScreen.Home, BottomBarScreen.Scan, BottomBarScreen.Tools)
 
     val navStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navStackEntry?.destination
@@ -51,20 +48,14 @@ fun BottomBar(navController: NavHostController) {
 }
 
 @Composable
-fun RowScope.AddItem(
-    screen: BottomBarScreen, currentDestination: NavDestination?, navController: NavHostController
-) {
+fun RowScope.AddItem(screen: BottomBarScreen, currentDestination: NavDestination?, navController: NavHostController) {
     BottomNavigationItem(
-
-        label = {
-            Text(text = screen.tittle, color = MaterialTheme.colorScheme.onSurfaceVariant)
-
-        },
-        icon = {
-            Icon(imageVector = if (currentDestination?.hierarchy?.any { it.route == screen.tittle } == true) {
+        label = { Text(text = screen.tittle, color = MaterialTheme.colorScheme.onSurfaceVariant) },
+        icon = { Icon(imageVector =
+        if (currentDestination?.hierarchy?.any { it.route == screen.tittle } == true) {
                 screen.selectedIcon
-
-            } else {
+            }
+        else {
                 screen.unselectedIcon
             },
 
@@ -72,12 +63,8 @@ fun RowScope.AddItem(
         },
         selectedContentColor = MaterialTheme.colorScheme.onSurfaceVariant,
         unselectedContentColor = MaterialTheme.colorScheme.outline,
-        selected = currentDestination?.hierarchy?.any {
-            it.route == screen.tittle
-        } == true,
-        onClick = {
-            navController.navigate(screen.tittle)
-        }
+        selected = currentDestination?.hierarchy?.any { it.route == screen.tittle } == true,
+        onClick = { navController.navigate(screen.tittle) }
 
     )
 }
