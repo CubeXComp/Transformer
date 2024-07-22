@@ -78,6 +78,10 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
 
 
+    // For Word To PDF Conversion
+    implementation ("org.apache.poi:poi-ooxml:5.2.3")
+    implementation ("com.itextpdf:itext7-core:7.2.3")
+
 
 
 }
