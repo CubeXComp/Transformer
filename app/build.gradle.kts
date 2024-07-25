@@ -68,6 +68,7 @@ dependencies {
     implementation(libs.androidx.constraintlayout)
     implementation(libs.compose.material)
     implementation(libs.androidx.constraintlayout.compose.android)
+    implementation(libs.androidx.media3.exoplayer)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -81,6 +82,8 @@ dependencies {
     // For Word To PDF Conversion
     implementation ("org.apache.poi:poi-ooxml:5.2.3")
     implementation ("com.itextpdf:itext7-core:7.2.3")
+
+    implementation ("com.google.accompanist:accompanist-permissions:0.26.5-rc")
 
 
 
