@@ -26,9 +26,9 @@
             android:exported="false"
             android:label="@string/title_activity_word_to_pdf_screen"
             android:theme="@style/Theme.Transformer" />
-<!--        <activity-->
-<!--            android:name=".screen.WordToPdf.MainActivity"-->
-<!--            android:exported="false" />-->
+        <activity
+            android:name=".screen.WordToPdf.MainActivity"
+            android:exported="false" />
         <activity
             android:name=".MainActivity"
             android:exported="true"
