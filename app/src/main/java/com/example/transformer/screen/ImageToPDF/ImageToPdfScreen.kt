@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeableTheme
 import android.content.Context
 import android.provider.MediaStore
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -72,27 +73,27 @@ class ImageToPdfScreen : ComponentActivity() {
     }
 }
 
-@Composable
-fun ImageToPdfView() {
-
-    LazyColumn(modifier = Modifier.fillMaxWidth(0.2f), horizontalAlignment = Alignment.CenterHorizontally)
-    {
-        item {
-
-
-            Button(onClick = {} ) {
-                Text(text = "Image To PDF",modifier = Modifier.padding(16.dp), fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
-            }
-                Button(onClick = {  } ){
-                    Text(text = "Download The PDF",modifier = Modifier.padding(16.dp), fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
-
-            }
-
-        }
-
-    }
-
-}
+//@Composable
+//fun ImageToPdfView() {
+//
+//    LazyColumn(modifier = Modifier.fillMaxWidth(0.2f), horizontalAlignment = Alignment.CenterHorizontally)
+//    {
+//        item {
+//
+//
+//            Button(onClick = {} ) {
+//                Text(text = "Image To PDF",modifier = Modifier.padding(16.dp), fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
+//            }
+//                Button(onClick = {  } ){
+//                    Text(text = "Download The PDF",modifier = Modifier.padding(16.dp), fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
+//
+//            }
+//
+//        }
+//
+//    }
+//
+//}
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
@@ -168,7 +169,7 @@ fun ImageToPdfViews(viewModel: ItpViewModel = viewModel()) {
         if (showConvertButton) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = { viewModel.convertImagesToPdf() },
+                onClick = { viewModel.convertImagesToPdf(viewModel.images,true) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Convert to PDF")
@@ -178,7 +179,15 @@ fun ImageToPdfViews(viewModel: ItpViewModel = viewModel()) {
         if (showDownloadButton) {
             Spacer(modifier = Modifier.height(8.dp))
             Button(
-                onClick = { /* Your logic to download the PDF */ },
+                onClick = {
+                    viewModel.pdfUri = viewModel.getPdfUri(context, viewModel.pdfFileName)
+                        if (viewModel.pdfUri != null) {
+                            viewModel.downloadPdf(context,viewModel.pdfUri!!,viewModel.pdfFileName)
+                        }
+                        else{
+                         Log.d("Error URI" , "Uri is NULL")
+                        }
+                    },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Download The PDF")

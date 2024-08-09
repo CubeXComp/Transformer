@@ -1,5 +1,7 @@
 package com.example.transformer.screen.ImageToPDF
 import android.app.Application
+import android.content.Context
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.pdf.PdfDocument
 import android.graphics.pdf.PdfRenderer
@@ -10,9 +12,12 @@ import android.os.Handler
 import android.os.Looper
 import android.os.ParcelFileDescriptor
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.core.content.FileProvider
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -27,7 +32,9 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
     val images: SnapshotStateList<Uri> = mutableStateListOf()
     val showConvertButton = mutableStateOf(false)
     val showDownloadButton = mutableStateOf(false)
-    val pdfUri = mutableStateOf("")
+    var pdfUri by mutableStateOf<Uri?>(null)
+    var pdfFileName by mutableStateOf("")
+
     val currPage = mutableStateOf(null)
 
 //    private fun loadPdfPages(){
@@ -70,11 +77,15 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
 //
 //    }
 
-    fun convertPicturesToPdf(uriList: List<Uri>, convertAll: Boolean, onComplete: () -> Unit) {
+    fun convertPicturesToPdf(
+        uriList: SnapshotStateList<Uri>,
+        convertAll: Boolean = true,
+        onComplete: () -> Unit
+    ) {
         viewModelScope.launch(Dispatchers.IO) {
             val context = getApplication<Application>().applicationContext
             val picturesToPdfList = if (convertAll) {
-                uriList
+                uriList.toList()
             } else {
                 uriList.filter { /* your condition for selecting specific URIs */ true }
             }
@@ -83,8 +94,8 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
                 val root = File(context.getExternalFilesDir(null), "PDF_FOLDER")
                 root.mkdirs()
                 val timestamp = System.currentTimeMillis()
-                val fileName = "PDF_$timestamp.pdf"
-                val file = File(root, fileName)
+                pdfFileName = "PDF_$timestamp.pdf"
+                val file = File(root, pdfFileName)
                 val fileOutputStream = FileOutputStream(file)
                 val pdfDocument = PdfDocument()
                 var cnt = 0
@@ -113,6 +124,8 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
                 pdfDocument.writeTo(fileOutputStream)
                 pdfDocument.close()
                 fileOutputStream.close()
+
+                pdfUri = getPdfUri(context, pdfFileName)
             } catch (e: Exception) {
                 e.printStackTrace()
             }
@@ -120,7 +133,6 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
             onComplete()
         }
     }
-
 
 
     fun addImage(uri: Uri) {
@@ -136,8 +148,43 @@ class ItpViewModel(application: Application) : AndroidViewModel(application) {
         }
     }
 
-    fun convertImagesToPdf() {
-        // Add your PDF conversion logic here
-        showDownloadButton.value = true
+
+
+    fun getPdfUri(context: Context, fileName: String): Uri? {
+        val pdfFile = File(context.getExternalFilesDir(null), "PDF_FOLDER/$fileName")
+        return if (pdfFile.exists()) {
+            FileProvider.getUriForFile(context, "${context.packageName}.fileprovider", pdfFile)
+        } else {
+            null
+        }
     }
+
+
+    fun convertImagesToPdf(uriList: SnapshotStateList<Uri>, convertAll: Boolean = true) {
+        convertPicturesToPdf(uriList,true,{
+            showDownloadButton.value = true
+        });
+
+    }
+
+    fun downloadPdf(context: Context, uri: Uri?, fileName: String) {
+        uri?.let {
+            val intent = Intent(Intent.ACTION_SEND).apply {
+                type = "application/pdf"
+                putExtra(Intent.EXTRA_STREAM, it)
+                addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
+                putExtra(Intent.EXTRA_TITLE, fileName)
+            }
+            context.startActivity(Intent.createChooser(intent, "Download PDF"))
+        }
+        deletePdfFile(context, fileName)
+    }
+
+    private fun deletePdfFile(context: Context, fileName: String) {
+        val file = File(context.getExternalFilesDir(null), "PDF_FOLDER/$fileName")
+        if (file.exists()) {
+            file.delete()
+        }
+    }
+
 }

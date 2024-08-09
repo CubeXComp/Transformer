@@ -2,6 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
@@ -12,6 +21,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Transformer"
         tools:targetApi="31">
+        <activity
+            android:name=".screen.PdfToImage.PdfToImageScreen"
+            android:exported="false"
+            android:label="@string/title_activity_pdf_to_image_screen"
+            android:theme="@style/Theme.Transformer" />
         <activity
             android:name=".screen.ImageToPDF.ImageToPdfScreen"
             android:exported="false"
@@ -33,7 +47,6 @@
             android:exported="false"
             android:label="@string/title_activity_word_to_pdf_screen"
             android:theme="@style/Theme.Transformer" />
-
         <activity
             android:name=".MainActivity"
             android:exported="true"
