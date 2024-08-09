@@ -21,6 +21,8 @@ import androidx.compose.material.icons.filled.Article
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
+import com.example.transformer.screen.ImageToPDF.ImageToPdfScreen
+import com.example.transformer.screen.PdfToImage.PdfToImageScreen
 import com.example.transformer.screen.WordToPdf.WordToPdfScreen
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,6 +59,14 @@ fun ContainerItem(item: ContainerItemData, navController: NavHostController) {
 
                 if(item.heading=="Word to Pdf"){
                     val navigate = Intent(context, WordToPdfScreen::class.java)
+                    context.startActivity(navigate)
+                }
+                else if(item.heading=="Image To Pdf"){
+                    val navigate = Intent(context, ImageToPdfScreen::class.java)
+                    context.startActivity(navigate)
+                }
+                else if(item.heading=="PDF to Image"){
+                    val navigate = Intent(context, PdfToImageScreen::class.java)
                     context.startActivity(navigate)
                 }
 

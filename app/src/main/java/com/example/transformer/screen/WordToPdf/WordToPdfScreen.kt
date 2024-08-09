@@ -67,25 +67,12 @@ class WordToPdfScreen : ComponentActivity() {
 @SuppressLint("SuspiciousIndentation")
 @Composable
 fun CollapsibleHeaderScreen(viewModel: WtpViewModel) {
-
-
     val context = LocalContext.current
-
     val scrollState = rememberScrollState()
-
-    // For the Cart buttons
-
-
-    // Header
     val headerHeight by animateDpAsState(targetValue = (300 - scrollState.value / 2).coerceIn(56, 300)
         .dp)
-
     // All Variables for Conversion to word to pdf
-
     val scope = rememberCoroutineScope()
-
-
-
 
     val filePickerLauncher = rememberLauncherForActivityResult(contract = GetContent()) { uri: Uri? ->
         uri?.let {
