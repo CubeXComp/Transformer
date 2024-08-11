@@ -2,6 +2,7 @@ package com.example.transformer.screen.PdfToImage
 
 import android.annotation.SuppressLint
 import android.app.Activity
+import android.app.DownloadManager
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -34,6 +35,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.PhotoSizeSelectLarge
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -51,6 +53,7 @@ import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.media3.exoplayer.offline.Download
 
 class PdfToImageScreen : ComponentActivity() {
     val viewModel by viewModels<PdfToImageViewModel>()
@@ -60,8 +63,10 @@ class PdfToImageScreen : ComponentActivity() {
         setContent {
             MotionLayoutWithNestedScrollAndSwipeableTheme {
 
-                Column {
-                    Header()
+                Surface(
+                    modifier = Modifier.fillMaxSize(),
+                    color = MaterialTheme.colorScheme.background
+                ) {
                     PdfToImageView(viewModel);
                 }
 
@@ -96,13 +101,19 @@ fun PdfToImageView(viewModel: PdfToImageViewModel) {
     LazyColumn(
         modifier = Modifier.fillMaxWidth(0.2f),
         horizontalAlignment = Alignment.CenterHorizontally
+
     )
+
+
     {
+
         item {
+            Header()
             UploadContainerItem(
                 Icons.Default.PhotoSizeSelectLarge,  viewModel.buttonText,  viewModel.buttonTextDesc,
                 {
                     viewModel.ShowImages.value = false
+                    viewModel.DownlaodBtn = false;
                     val intent = Intent(Intent.ACTION_OPEN_DOCUMENT).apply {
                         addCategory(Intent.CATEGORY_OPENABLE)
                         type = "application/pdf"
@@ -125,7 +136,18 @@ fun PdfToImageView(viewModel: PdfToImageViewModel) {
 
             if(viewModel.ShowImages.value){
                 ImageView(viewModel)
+                viewModel.DownlaodBtn = true;
+
             }
+
+            if(viewModel.DownlaodBtn){
+                Toast.makeText(context, "Conversion Successful", Toast.LENGTH_SHORT).show()
+                Button(onClick = {viewModel.saveImagesToGallery(context)}){
+                    Text(text = "Save Images",modifier = Modifier.padding(16.dp), fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
+                }
+            }
+
+
 
         }
     }
@@ -149,9 +171,7 @@ fun ImageView(viewModel: PdfToImageViewModel) {
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
             items(images) { bitmap ->
-                Image(
-                    bitmap = bitmap.asImageBitmap(),
-                    contentDescription = null,
+                Image(bitmap = bitmap.asImageBitmap(), contentDescription = null,
                     modifier = Modifier
                         .width(200.dp)
                         .height(300.dp) // Adjust size as needed
@@ -161,6 +181,7 @@ fun ImageView(viewModel: PdfToImageViewModel) {
         }
     }
 }
+
 
 
 

@@ -145,8 +145,7 @@ fun ImageToPdfViews(viewModel: ItpViewModel = viewModel()) {
             Spacer(modifier = Modifier.height(8.dp))
             LazyRow(modifier = Modifier.fillMaxWidth()) {
                 items(images) { uri ->
-                    Box(
-                        modifier = Modifier
+                    Box(modifier = Modifier
                             .padding(8.dp)
                             .size(100.dp)
                     ) {
