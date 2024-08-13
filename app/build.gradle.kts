@@ -13,7 +13,6 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
-
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -49,6 +48,8 @@ android {
     }
 }
 
+
+
 dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
@@ -59,7 +60,7 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.navigation.compose)
-    implementation(libs.androidx.compose.material) // Add this line
+    implementation(libs.androidx.compose.material)
     implementation(libs.androidx.material.icons.extended)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.appcompat)
@@ -77,11 +78,8 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-
     // For Word To PDF Conversion
-    implementation ("org.apache.poi:poi-ooxml:5.2.3")
-    implementation ("com.itextpdf:itext7-core:7.2.3")
+    implementation("org.apache.poi:poi-ooxml:5.2.3")
 
-
-
+    implementation("com.itextpdf.android:itext7-core-android:7.2.3")
 }
