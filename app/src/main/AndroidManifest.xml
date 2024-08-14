@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +22,16 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
+        <activity
+            android:name=".screen.PdfToImage.PdfToImageScreen"
+            android:exported="false"
+            android:label="@string/title_activity_pdf_to_image_screen"
+            android:theme="@style/Theme.Transformer" />
+        <activity
+            android:name=".screen.ImageToPDF.ImageToPdfScreen"
+            android:exported="false"
+            android:label="@string/title_activity_image_to_pdf_screen"
+            android:theme="@style/Theme.Transformer" />
         <activity
             android:name=".screen.WordToPdf.WordToPdfScreen"
             android:exported="false"
