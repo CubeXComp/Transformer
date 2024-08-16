@@ -1,5 +1,4 @@
 package com.example.transformer.screen
-
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
@@ -8,36 +7,24 @@ import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.material.icons.filled.PhotoSizeSelectLarge
 import androidx.compose.material.icons.filled.PictureAsPdf
-import androidx.compose.material.icons.filled.Image
 import androidx.compose.material.icons.filled.Description
-import androidx.compose.material.icons.filled.Article
-import androidx.compose.material.icons.filled.AudioFile
 import androidx.compose.material.icons.filled.MoreHoriz
-import androidx.compose.material.icons.filled.VideoLibrary
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.core.content.ContextCompat.startActivity
 import androidx.navigation.NavHostController
-import com.example.transformer.screen.ImageToPDF.ImageToPdfScreen
+import androidx.navigation.compose.rememberNavController
 import com.example.transformer.screen.PdfToImage.PdfToImageScreen
 import com.example.transformer.screen.PdfToWord.PdfToWordScreen
-
-import com.example.transformer.screen.WordToPdf.WordToPdfScreen
-import org.apache.poi.xssf.usermodel.TextAlign
 import java.text.DecimalFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -78,6 +65,9 @@ fun CloudStorageStatus() {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
+        ,elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
             Text("Device Storage", style = MaterialTheme.typography.titleMedium)
@@ -157,6 +147,7 @@ fun QuickAccess(context: Context) {
                 icon = Icons.Default.MoreHoriz,
                 title = "View More",
                 onClick = {
+
                     Toast.makeText(context, "View More options", Toast.LENGTH_SHORT).show()
                 }
             )
@@ -171,7 +162,7 @@ fun QuickAccessItem(icon: ImageVector, title: String, onClick: () -> Unit) {
             .size(100.dp)
             .padding(4.dp)
             .clickable(onClick = onClick),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
