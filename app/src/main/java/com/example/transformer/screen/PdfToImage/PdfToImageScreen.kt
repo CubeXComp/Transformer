@@ -1,10 +1,6 @@
 package com.example.transformer.screen.PdfToImage
-
-import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.DownloadManager
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -13,7 +9,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.activity.result.contract.ActivityResultContracts.GetContent
 import androidx.activity.viewModels
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.Image
@@ -48,10 +43,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.transformer.LayoutAndComposable.UploadContainerItem
-import com.example.transformer.screen.WordToPdf.WtpViewModel
 import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeableTheme
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.media3.exoplayer.offline.Download
 

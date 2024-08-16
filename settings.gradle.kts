@@ -7,6 +7,10 @@ pluginManagement {
                 includeGroupByRegex("androidx.*")
             }
         }
+        
+            google()
+            mavenCentral()
+
         mavenCentral()
         maven {
             url = uri("https://repository.aspose.com/repo/")
