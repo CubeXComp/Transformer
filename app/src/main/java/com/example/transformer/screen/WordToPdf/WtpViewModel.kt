@@ -8,6 +8,8 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.content.FileProvider
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.transformer.Utility
 import org.apache.poi.xwpf.usermodel.XWPFDocument
 import com.itextpdf.kernel.pdf.PdfWriter
 import com.itextpdf.layout.Document
@@ -18,7 +20,7 @@ import java.io.InputStream
 
 class WtpViewModel : ViewModel() {
 
-
+    val utility = Utility();
     var buttonText by mutableStateOf("Choose Word File")
     var buttonTextDesc by mutableStateOf("Upload file")
 
@@ -30,6 +32,9 @@ class WtpViewModel : ViewModel() {
     var pdfFileName by mutableStateOf("")
 
 
+    fun saveToDevice(context: Context ,uri:Uri){
+        utility.saveFileToCustomFolder(context,uri,pdfFileName);
+    }
 
     fun getFileNameFromUri(context: Context, uri: Uri): String {
         var fileName = "document.pdf"

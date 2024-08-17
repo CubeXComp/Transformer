@@ -1,9 +1,8 @@
-package com.example.transformer.screen
+package com.example.transformer.screen.HomePage
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
 import android.os.StatFs
-import android.widget.Toast
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -17,14 +16,19 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.material.icons.filled.PictureAsPdf
 import androidx.compose.material.icons.filled.Description
 import androidx.compose.material.icons.filled.MoreHoriz
+import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+import com.example.transformer.Utility
 import com.example.transformer.screen.PdfToImage.PdfToImageScreen
 import com.example.transformer.screen.PdfToWord.PdfToWordScreen
+import com.google.android.gms.ads.AdRequest
+import com.google.android.gms.ads.AdSize
+import com.google.android.gms.ads.AdView
 import java.text.DecimalFormat
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,7 +52,7 @@ fun HomeScreen(navController: NavHostController) {
             modifier = Modifier.fillMaxSize()
         ) {
             item { CloudStorageStatus() }
-            item { QuickAccess(context) }
+            item { QuickAccess(context,navController) }
             item { GoPremiumButton() }
             item { ShareWithFriends() }
             item { RecentlyOpened() }
@@ -118,7 +122,7 @@ fun getStorageInfo(context: Context): StorageInfo {
 }
 
 @Composable
-fun QuickAccess(context: Context) {
+fun QuickAccess(context: Context,navController: NavHostController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Quick access", style = MaterialTheme.typography.titleMedium)
         Row(
@@ -147,8 +151,7 @@ fun QuickAccess(context: Context) {
                 icon = Icons.Default.MoreHoriz,
                 title = "View More",
                 onClick = {
-
-                    Toast.makeText(context, "View More options", Toast.LENGTH_SHORT).show()
+                    navController.navigate("Tool")
                 }
             )
         }
@@ -193,23 +196,70 @@ fun QuickAccessItem(icon: ImageVector, title: String, onClick: () -> Unit) {
 
 @Composable
 fun GoPremiumButton() {
-    Button(
-        onClick = { /* Handle click */ },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-        Text("Go Premium")
-        Spacer(Modifier.weight(1f))
-        Text("Upgrade")
+    Column {
+        Button(
+            onClick = { /* Handle click */ },
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Text("Go Premium")
+            Spacer(Modifier.weight(1f))
+            Text("Upgrade")
+        }
+        Box(modifier = Modifier.padding(12.dp)) {
+            BannerAds()
+        }
     }
+
+}
+@Composable
+fun BannerAds(){
+    AndroidView(
+        modifier = Modifier.fillMaxWidth(), factory = {context->
+            AdView(context).apply{
+            setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                context,AdSize.FULL_WIDTH
+            ))
+                adUnitId = Utility.TestAds.BANNER_AD
+                loadAd(AdRequest.Builder().build())
+        }}
+    )
+
 }
 
 @Composable
-fun ShareWithFriends() {
+fun ShareWithFriends(viewModel: HomeScreenViewModel = HomeScreenViewModel()) {
+    val context = LocalContext.current
+
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Share with friends", style = MaterialTheme.typography.titleMedium)
-        // Add horizontal scrollable list of friend avatars here
+
+        Card(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp)
+                .clickable {
+                    viewModel.shareApp(context)
+                },
+            elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            shape = RoundedCornerShape(16.dp),
+            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
+        ) {
+            Row(
+                modifier = Modifier.padding(16.dp),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Icon(
+                    imageVector = Icons.Default.Share,
+                    contentDescription = "Share",
+                    tint = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.size(40.dp)
+                )
+                Spacer(modifier = Modifier.width(16.dp))
+                Text("Share this app", style = MaterialTheme.typography.bodyLarge)
+            }
+        }
     }
 }
 
