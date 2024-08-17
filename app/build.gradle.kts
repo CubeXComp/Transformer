@@ -86,4 +86,7 @@ dependencies {
 
     // PDF Opr
     implementation (libs.aspose.pdf)
+
+    // AdMob
+    implementation(libs.play.services.ads)
 }

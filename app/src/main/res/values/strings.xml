@@ -3,4 +3,5 @@
     <string name="title_activity_word_to_pdf_screen">WordToPdfScreen</string>
     <string name="title_activity_image_to_pdf_screen">ImageToPdfScreen</string>
     <string name="title_activity_pdf_to_image_screen">PdfToImageScreen</string>
+    <string name="title_activity_pdf_to_word_screen">PdfToWordScreen</string>
 </resources>
