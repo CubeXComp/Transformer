@@ -83,6 +83,7 @@ dependencies {
     implementation("org.apache.poi:poi-ooxml:5.2.3")
     implementation ("com.google.accompanist:accompanist-permissions:0.26.5-rc")
     implementation("com.itextpdf.android:itext7-core-android:7.2.3")
+    implementation ("androidx.core:core-splashscreen:1.0.1")
 
     // PDF Opr
     implementation (libs.aspose.pdf)
