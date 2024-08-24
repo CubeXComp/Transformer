@@ -102,7 +102,7 @@ fun PageView(viewModel: WtpViewModel) {
             modifier = Modifier.verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            CollapsibleHeaderLayout()
+            CollapsibleHeaderLayout(text = "Word To Pdf")
 
             UploadContainerItem(
                 Icons.Default.PhotoSizeSelectLarge,

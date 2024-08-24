@@ -24,6 +24,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import com.example.transformer.LayoutAndComposable.CollapsibleHeaderLayout
 import com.example.transformer.screen.ImageToPDF.ImageToPdfScreen
 import com.example.transformer.screen.PdfToImage.PdfToImageScreen
 import com.example.transformer.screen.PdfToWord.PdfToWordScreen
@@ -39,29 +40,26 @@ fun ToolsPage(toolsViewModel: ToolsViewModel = viewModel()) {
         modifier = Modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
-            .padding(16.dp)
+
     ) {
         Column {
-            Text(
-                text = "Tool Screen",
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.White,
-                modifier = Modifier.padding(bottom = 16.dp)
-            )
+            CollapsibleHeaderLayout(text = "Tools Screen")
+            Column {
 
-            LazyVerticalGrid(
-                columns = GridCells.Fixed(2),
-                modifier = Modifier.fillMaxSize(),
-                contentPadding = PaddingValues(8.dp),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalArrangement = Arrangement.spacedBy(8.dp)
-            ) {
-                items(tools.size) { index ->
-                    ToolCard(tool = tools[index], context = context)
+                LazyVerticalGrid(
+                    columns = GridCells.Fixed(2),
+                    modifier = Modifier.fillMaxSize(),
+                    contentPadding = PaddingValues(8.dp),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    items(tools.size) { index ->
+                        ToolCard(tool = tools[index], context = context)
+                    }
                 }
             }
         }
+
     }
 }
 
@@ -74,15 +72,37 @@ fun ToolCard(tool: Tool, context: Context) {
             .clickable {
                 // Handle navigation
                 when (tool.label) {
-                    "PDF to Image" -> context.startActivity(Intent(context, PdfToImageScreen::class.java))
-                    "PDF to Word" -> context.startActivity(Intent(context, PdfToWordScreen::class.java))
+                    "PDF to Image" -> context.startActivity(
+                        Intent(
+                            context,
+                            PdfToImageScreen::class.java
+                        )
+                    )
+
+                    "PDF to Word" -> context.startActivity(
+                        Intent(
+                            context,
+                            PdfToWordScreen::class.java
+                        )
+                    )
 //                    "Image Resize" -> context.startActivity(Intent(context, ::class.java))
-                    "Image to PDF" -> context.startActivity(Intent(context, ImageToPdfScreen::class.java))
-                    "Word to PDF" -> context.startActivity(Intent(context, WordToPdfScreen::class.java))
+                    "Image to PDF" -> context.startActivity(
+                        Intent(
+                            context,
+                            ImageToPdfScreen::class.java
+                        )
+                    )
+
+                    "Word to PDF" -> context.startActivity(
+                        Intent(
+                            context,
+                            WordToPdfScreen::class.java
+                        )
+                    )
                 }
             }
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .padding(16.dp)
                 .fillMaxWidth()

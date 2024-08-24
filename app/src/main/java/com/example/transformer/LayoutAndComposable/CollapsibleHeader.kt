@@ -16,7 +16,8 @@ import androidx.compose.ui.unit.dp
 
 
 @Composable
-fun CollapsibleHeaderLayout(){
+fun CollapsibleHeaderLayout(text :String = "Screen"){
+
     val screenHeight = LocalConfiguration.current.screenHeightDp.dp
     val headerHeight = screenHeight * 0.2f // mai 20% de raha hu header ka height
     Box(
@@ -33,6 +34,6 @@ fun CollapsibleHeaderLayout(){
             ),
         contentAlignment = Alignment.BottomStart
     ) {
-        Text(modifier = Modifier.padding(16.dp),text = "Word To Pdf", fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
+        Text(modifier = Modifier.padding(16.dp),text = text, fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight)
     }
 }

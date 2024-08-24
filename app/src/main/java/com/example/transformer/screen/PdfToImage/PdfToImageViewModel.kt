@@ -31,11 +31,13 @@ class PdfToImageViewModel : ViewModel() {
     var buttonTextDesc by mutableStateOf("Upload file")
     var DownlaodBtn by mutableStateOf(false)
 
+    var isConverting by mutableStateOf(false)
     val ImagesUriList = mutableStateListOf<Bitmap>()
 
     val ShowImages = mutableStateOf(false)
 
     fun convertPdfToImages(pdfFile: File): Unit {
+        isConverting = true
         val fileDescriptor = ParcelFileDescriptor.open(pdfFile, ParcelFileDescriptor.MODE_READ_ONLY)
         val pdfRenderer = PdfRenderer(fileDescriptor)
         val pageCount = pdfRenderer.pageCount
@@ -49,6 +51,7 @@ class PdfToImageViewModel : ViewModel() {
         }
         pdfRenderer.close()
         fileDescriptor.close()
+        isConverting = false
         ShowImages.value = true
     }
 
