@@ -51,7 +51,7 @@ class PdfToImageViewModel : ViewModel() {
         }
         pdfRenderer.close()
         fileDescriptor.close()
-        isConverting = false
+
         ShowImages.value = true
     }
 

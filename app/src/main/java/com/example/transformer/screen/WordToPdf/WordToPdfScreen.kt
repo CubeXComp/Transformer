@@ -40,6 +40,7 @@ import androidx.constraintlayout.compose.ExperimentalMotionApi
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import com.example.transformer.LayoutAndComposable.CollapsibleHeaderLayout
+import com.example.transformer.LayoutAndComposable.ConvertBtn
 
 import com.example.transformer.LayoutAndComposable.UploadContainerItem
 import com.example.transformer.ui.theme.MotionLayoutWithNestedScrollAndSwipeableTheme
@@ -70,12 +71,10 @@ class WordToPdfScreen : ComponentActivity() {
     }
 }
 
-
-
 @Composable
 fun PageView(viewModel: WtpViewModel) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope() // P
+    val scope = rememberCoroutineScope()
 
     val filePickerLauncher = rememberLauncherForActivityResult(contract = GetContent()) { uri: Uri? ->
         uri?.let {
@@ -112,85 +111,68 @@ fun PageView(viewModel: WtpViewModel) {
                     filePickerLauncher.launch("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
                 },
             )
-
-            Spacer(modifier = Modifier.height(16.dp))
-            Button(
-                onClick = {
-                    if (viewModel.ConversionToPDFConditionCheck(context)) {
-                        scope.launch(Dispatchers.IO) {
-                            val result = viewModel.convertWordToPdf(
-                                context,
-                                viewModel.FileUri!!,
-                                viewModel.FileName
-                            )
-                            viewModel.pdfFileName = viewModel.FileName.replace(".docx", ".pdf")
-                            viewModel.status = if (result) {
-                                viewModel.DownlaodBtn = true
-                                viewModel.pdfUri = viewModel.getPdfUri(context, viewModel.pdfFileName)
-                                "Conversion Successful"
-                            } else {
-                                viewModel.DownlaodBtn = false
-                                viewModel.pdfUri = null
-                                "Conversion Failed"
-                            }
-                        }
-                    } else {
-                        Toast.makeText(context, "Please select a file", Toast.LENGTH_SHORT).show()
-                    }
-                }
-            ) {
-                Text(
-                    text = "Convert To PDF",
-                    modifier = Modifier.padding(16.dp),
-                    fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                    fontWeight = MaterialTheme.typography.bodyMedium.fontWeight
-                )
-            }
-
-
-
-            if (viewModel.DownlaodBtn) {
-                Toast.makeText(context, "Conversion Successful", Toast.LENGTH_SHORT).show()
-                Button(
-                    onClick = { }
-                ) {
-                    Text(
-                        text = "Download The PDF",
-                        modifier = Modifier.padding(16.dp),
-                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
-                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight
-                    )
-                }
-            }
         }
 
-        // Row at the bottom with a centered button
+        // Column for bottom content
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .align(Alignment.BottomCenter)
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.Center
         ) {
-            Button(onClick = { filePickerLauncher.launch("application/vnd.openxmlformats-officedocument.wordprocessingml.document") }) { Text(text = "Pick File") }
+            Button(
+                onClick = {
+                    filePickerLauncher.launch("application/vnd.openxmlformats-officedocument.wordprocessingml.document")
+                },
+                modifier = Modifier.padding(bottom = 8.dp)
+            ) {
+                Text(text = "Pick File")
+            }
 
-            if(viewModel.DownlaodBtn) {
-                DownloadButton(
-                    icon = Icons.Default.Download,
-                    onClick = { viewModel.saveToDevice(context,viewModel.pdfUri!!) }
+            // Show the "Convert To PDF" button if a file is selected
+            if (viewModel.FileUri != null) {
+                ConvertBtn(
+                    onClick = {
+                        if (viewModel.ConversionToPDFConditionCheck(context)) {
+                            scope.launch(Dispatchers.IO) {
+                                val result = viewModel.convertWordToPdf(
+                                    context,
+                                    viewModel.FileUri!!,
+                                    viewModel.FileName
+                                )
+                                viewModel.pdfFileName = viewModel.FileName.replace(".docx", ".pdf")
+                                viewModel.status = if (result) {
+                                    viewModel.DownlaodBtn = true
+                                    viewModel.pdfUri = viewModel.getPdfUri(context, viewModel.pdfFileName)
+                                    "Conversion Successful"
+                                } else {
+                                    viewModel.DownlaodBtn = false
+                                    viewModel.pdfUri = null
+                                    "Conversion Failed"
+                                }
+                            }
+                        } else {
+                            Toast.makeText(context, "Please select a file", Toast.LENGTH_SHORT).show()
+                        }
+                    },
                 )
             }
-            if(viewModel.DownlaodBtn) {
+
+            // Show the download and share buttons if conversion is successful
+            if (viewModel.DownlaodBtn) {
                 Toast.makeText(context, "Conversion Successful", Toast.LENGTH_SHORT).show()
-                DownloadButton(
-                    icon = Icons.Default.Share,
-                    onClick = { viewModel.pdfUri?.let { viewModel.downloadPdf(context, it, viewModel.pdfFileName) } }
-                )
+                Row {
+                    DownloadButton(
+                        icon = Icons.Default.Download,
+                        onClick = { viewModel.saveToDevice(context, viewModel.pdfUri!!) }
+                    )
+                    Spacer(modifier = Modifier.width(16.dp))
+                    DownloadButton(
+                        icon = Icons.Default.Share,
+                        onClick = { viewModel.pdfUri?.let { viewModel.downloadPdf(context, it, viewModel.pdfFileName) } }
+                    )
+                }
             }
-
         }
     }
 }
-
-
-
