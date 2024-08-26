@@ -121,12 +121,8 @@ fun PdfToImagePageView(viewModel: PdfToImageViewModel) {
 
         BottomArea(
             viewModel = viewModel,
-            onConvertClick = {
-                viewModel.convertPdfToImages(viewModel.uriToFile(viewModel.PdfFileUri!!, context))
-            },
-            onDownloadClick = {
-                viewModel.saveImagesToGallery(context)
-            }
+            onConvertClick = { viewModel.convertPdfToImages(viewModel.uriToFile(viewModel.PdfFileUri!!, context)) },
+            onDownloadClick = { viewModel.saveImagesToGallery(context) }
         )
     }
 }
