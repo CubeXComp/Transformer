@@ -1,4 +1,5 @@
 package com.example.transformer.screen.HomePage
+
 import android.content.Context
 import android.content.Intent
 import android.os.Environment
@@ -19,6 +20,7 @@ import androidx.compose.material.icons.filled.MoreHoriz
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.viewinterop.AndroidView
@@ -35,24 +37,33 @@ import java.text.DecimalFormat
 @Composable
 fun HomeScreen(navController: NavHostController) {
     val context = LocalContext.current
+    val scrollBehavior = TopAppBarDefaults.exitUntilCollapsedScrollBehavior(rememberTopAppBarState())
 
     Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
         topBar = {
             LargeTopAppBar(
-                title = { Text("Transformer", fontSize = MaterialTheme.typography.headlineLarge.fontSize, fontWeight = MaterialTheme.typography.bodyMedium.fontWeight) },
+                title = {
+                    Text(
+                        "Transformer",
+                        fontSize = MaterialTheme.typography.headlineLarge.fontSize,
+                        fontWeight = MaterialTheme.typography.bodyMedium.fontWeight
+                    )
+                },
                 colors = TopAppBarDefaults.largeTopAppBarColors(
                     containerColor = MaterialTheme.colorScheme.surfaceVariant,
                     titleContentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                ),
+                scrollBehavior = scrollBehavior
             )
-        }
+        },
     ) { innerPadding ->
         LazyColumn(
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize()
         ) {
             item { CloudStorageStatus() }
-            item { QuickAccess(context,navController) }
+            item { QuickAccess(context, navController) }
             item { GoPremiumButton() }
             item { ShareWithFriends() }
             item { RecentlyOpened() }
@@ -68,8 +79,7 @@ fun CloudStorageStatus() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-        ,elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
+            .padding(16.dp), elevation = CardDefaults.cardElevation(defaultElevation = 6.dp),
         shape = RoundedCornerShape(16.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surfaceVariant)
     ) {
@@ -114,15 +124,15 @@ fun getStorageInfo(context: Context): StorageInfo {
     val usedPercentage = ((usedBytes.toDouble() / totalBytes.toDouble()) * 100).toInt()
 
     return StorageInfo(
-        totalSpace = "${totalGB} GB",
-        usedSpace = "${usedGB} GB",
-        freeSpace = "${freeGB} GB",
+        totalSpace = "$totalGB GB",
+        usedSpace = "$usedGB GB",
+        freeSpace = "$freeGB GB",
         usedPercentage = usedPercentage
     )
 }
 
 @Composable
-fun QuickAccess(context: Context,navController: NavHostController) {
+fun QuickAccess(context: Context, navController: NavHostController) {
     Column(modifier = Modifier.padding(16.dp)) {
         Text("Quick access", style = MaterialTheme.typography.titleMedium)
         Row(
@@ -213,17 +223,21 @@ fun GoPremiumButton() {
     }
 
 }
+
 @Composable
-fun BannerAds(){
+fun BannerAds() {
     AndroidView(
-        modifier = Modifier.fillMaxWidth(), factory = {context->
-            AdView(context).apply{
-            setAdSize(AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
-                context,AdSize.FULL_WIDTH
-            ))
+        modifier = Modifier.fillMaxWidth(), factory = { context ->
+            AdView(context).apply {
+                setAdSize(
+                    AdSize.getCurrentOrientationAnchoredAdaptiveBannerAdSize(
+                        context, AdSize.FULL_WIDTH
+                    )
+                )
                 adUnitId = Utility.TestAds.BANNER_AD
                 loadAd(AdRequest.Builder().build())
-        }}
+            }
+        }
     )
 
 }
@@ -274,7 +288,10 @@ fun RecentlyOpened() {
             TextButton(onClick = { /* Handle click */ }) {
                 Text("See all")
             }
+
         }
+        Spacer(modifier = Modifier.height(100.dp))
         // Add list of recently opened files here
+
     }
 }
