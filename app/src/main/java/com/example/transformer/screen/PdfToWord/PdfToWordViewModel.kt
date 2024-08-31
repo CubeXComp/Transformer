@@ -78,7 +78,7 @@ class PdfToWordViewModel : ViewModel() {
         }
     }
 
-    fun downloadWord(context: Context, uri: Uri, fileName: String) {
+    fun shareFile(context: Context, uri: Uri, fileName: String) {
         val intent = Intent(Intent.ACTION_SEND).apply {
             type = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
             putExtra(Intent.EXTRA_STREAM, uri)

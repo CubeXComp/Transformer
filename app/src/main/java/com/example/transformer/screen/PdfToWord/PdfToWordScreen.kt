@@ -112,12 +112,15 @@ fun CollapsibleHeaderScreen(viewModel: PdfToWordViewModel) {
             horizontalArrangement = Arrangement.Center
         ) {
             // Show the "Pick File" button if no file is selected
-            Button(modifier = Modifier.padding(horizontal = 16.dp), onClick = {
-                filePickerLauncher.launch("application/pdf")
-            }) {
-                Icon(imageVector = Icons.Default.FileOpen, contentDescription = null)
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "Pick a File")
+
+            if(viewModel.FileUri == null) {
+                Button(modifier = Modifier.padding(horizontal = 16.dp), onClick = {
+                    filePickerLauncher.launch("application/pdf")
+                }) {
+                    Icon(imageVector = Icons.Default.FileOpen, contentDescription = null)
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "Pick a File")
+                }
             }
 
             // Show the "Convert" button if a file is selected but not yet converted
@@ -158,16 +161,15 @@ fun CollapsibleHeaderScreen(viewModel: PdfToWordViewModel) {
             if (conversionDone) {
                 Button(onClick = {
                     viewModel.wordUri?.let {
-                        viewModel.downloadWord(
-                            context,
+                        viewModel.shareFile(context,
                             it,
                             viewModel.wordFileName
                         )
                     }
                 }) {
-                    Icon(imageVector = Icons.Default.Download, contentDescription = null)
+                    Icon(imageVector = Icons.Default.Share, contentDescription = null)
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "Download the Word Document")
+                    Text(text = "Share the Word Document")
                 }
             }
         }

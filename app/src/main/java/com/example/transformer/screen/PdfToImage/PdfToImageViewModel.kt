@@ -28,7 +28,7 @@ class PdfToImageViewModel : ViewModel() {
 
     var PdfFileUri by mutableStateOf<Uri?>(null)
     var buttonText by mutableStateOf("Choose PDF File")
-    var buttonTextDesc by mutableStateOf("Upload file")
+    var buttonTextDesc by mutableStateOf("Pdf Images")
     var DownlaodBtn by mutableStateOf(false)
 
     var isConverting by mutableStateOf(false)
@@ -53,6 +53,7 @@ class PdfToImageViewModel : ViewModel() {
         fileDescriptor.close()
 
         ShowImages.value = true
+        isConverting = false
     }
 
     fun uriToFile(uri: Uri, context: Context): File {

@@ -84,7 +84,9 @@ fun PdfToImagePageView(viewModel: PdfToImageViewModel) {
         }
     }
 
-    Box(modifier = Modifier.fillMaxSize()) {
+
+
+    Box(modifier = Modifier.fillMaxSize(),) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -92,6 +94,7 @@ fun PdfToImagePageView(viewModel: PdfToImageViewModel) {
                 .padding(bottom = 80.dp), // Adjusted for bottom area
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
             CollapsibleHeaderLayout(text = "Pdf To Image")
             UploadContainerItem(
                 icon = Icons.Default.PhotoSizeSelectLarge,
